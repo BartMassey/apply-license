@@ -1,32 +1,54 @@
 #!/bin/sh
-CTMP=/tmp/al-copyright.$$
-LTMP=/tmp/al-license.$$
-STMP=/tmp/al-sed.$$
-PTMP=/tmp/al-presed.$$
-trap "rm -f $CTMP $LTMP $STMP $PTMP" 0 1 2 3 15
 
-# set up
+# many temporary files are needed
+CFILE=/tmp/al-cfile.$$; TMPFILES="$CFILE"
+LFILE=/tmp/al-lfile.$$; TMPFILES="$TMPFILES $LFILE"
+CTMP=/tmp/al-copyright.$$; TMPFILES="$TMPFILES $CTMP"
+LTMP=/tmp/al-license.$$; TMPFILES="$TMPFILES $LTMP"
+SHTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $SHTMP"
+STTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $STTMP"
+STMP=/tmp/al-sed.$$; TMPFILES="$TMPFILES $STMP"
+PTMP=/tmp/al-presed.$$; TMPFILES="$TMPFILES $PTMP"
+trap "rm -f $TMPFILES" 0 1 2 3 15
+
+# deal with args
 PGM="`basename $0`"
-if [ $# -ne 1 ]
+USAGE="$PGM: usage: $PGM [-f] [copying-file]"
+NOFORCE="true"
+COPYING="COPYING"
+if [ $# -ge 1 ] && [ "$1" = "-f" ]
 then
-  echo "$PGM: usage: $PGM [mit]" >&2
+  NOFORCE="false"
+  shift
+fi
+if [ $# -eq 1 ]
+then
+  COPYING=$1
+  shift
+fi
+if [ $# -ne 0 ]
+then
+  echo "$USAGE" >&2
   exit 1
 fi
-CFILE="$HOME/etc/copyright.txt"
-if [ ! -f "$CFILE" ]
+if $NOFORCE && [ -f .apply-license ]
 then
-  echo "$PGM: unknown copyright" >&2
+  echo "$PGM: license already applied" >&2
   exit 1
 fi
-LFILE="$HOME/etc/$1-license.txt"
-if [ ! -f "$LFILE" ]
+if [ ! -f "$COPYING" ]
 then
-  echo "$PGM: unknown license $1" >&2
+  echo "$PGM: can't find copying file" >&2
   exit 1
 fi
+
+# create CFILE and LFILE
+sed '/^$/,$d' < $COPYING > $CFILE
+echo "Please see the end of this file for license information." >> $CFILE
+sed -e '1,/^$/d' -e '1,/^$/d' < $COPYING > $LFILE
 
 # Build substitution sed script
-cat << EOF > $STMP |
+cat << EOF > $SHTMP |
 1 {
  h
  r $CTMP
@@ -38,12 +60,15 @@ cat << EOF > $STMP |
  x
  G
 }
+EOF
+cat << EOF > $STTMP |
 \$ {
  a\
 
  r $LTMP
 }
 EOF
+cat $SHTMP $STTMP > $STMP
 
 # C comments for C-like code
 ls *.[chyl] >/dev/null 2>&1
@@ -64,9 +89,7 @@ fi
 # sharp comments for Makefile
 if [ -f Makefile ]
 then
-  cat <<'EOF' > $PTMP
-  1,$ s=^=# =
-EOF
+  echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
   sedit Makefile < $STMP
@@ -76,18 +99,26 @@ fi
 ls *.man >/dev/null 2>&1
 if [ $? = 0 ]
 then
-  cat <<'EOF' > $PTMP
-  1,$ s=^=.\\" =
-EOF
+  echo '1,$ s=^=.\\" =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
   sedit *.man < $STMP
 fi
 
-# create COPYING file if needed
-if [ ! -f COPYING ]
+# XXX change head script for scripts to
+# avoid #! line
+echo "1 r $CTMP" > $SHTMP
+cat $SHTMP $STTMP > $STMP
+
+# sharp comments at line 2 for shell script
+ls *.sh >/dev/null 2>&1
+if [ $? = 0 ]
 then
-  cat $CFILE > COPYING
-  echo "" >> COPYING
-  cat $LFILE > COPYING
+  echo '1,$ s=^=# =' > $PTMP
+  sed -f $PTMP $CFILE > $CTMP
+  sed -f $PTMP $LFILE > $LTMP
+  sedit *.sh < $STMP
 fi
+
+# mark license as applied
+echo "License information applied by apply-license" > .apply-license
