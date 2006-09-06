@@ -6,7 +6,7 @@ LFILE=/tmp/al-lfile.$$; TMPFILES="$TMPFILES $LFILE"
 CTMP=/tmp/al-copyright.$$; TMPFILES="$TMPFILES $CTMP"
 LTMP=/tmp/al-license.$$; TMPFILES="$TMPFILES $LTMP"
 SHTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $SHTMP"
-STTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $STTMP"
+STTMP=/tmp/al-sedt.$$; TMPFILES="$TMPFILES $STTMP"
 STMP=/tmp/al-sed.$$; TMPFILES="$TMPFILES $STMP"
 PTMP=/tmp/al-presed.$$; TMPFILES="$TMPFILES $PTMP"
 trap "rm -f $TMPFILES" 0 1 2 3 15
