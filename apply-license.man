@@ -17,7 +17,10 @@ code it can find that does not already appear to have a
 copyright notice.  Source code is identified by
 suffix.  Currently recognized suffixes are ".c", ".h", ".y",
 ".l", ".sh", and ".man"; the file "Makefile" is also
-currently processed.  Others may be added in the future.
+currently processed.  The first line of a ".sh" file
+must be a "#!" line and is skipped.  The first
+line of a ".man" file must be a ".TH" line and is skipped.
+Other files may be added in the future.
 .SH OPTIONS
 .TP
 .I "copying-file"

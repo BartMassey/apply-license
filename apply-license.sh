@@ -103,6 +103,11 @@ then
   )
 fi
 
+# XXX change head script to avoid first line
+# in subsequent processing
+echo "1 r $CTMP" > $SHTMP
+cat $SHTMP $STTMP > $STMP
+
 # troff comments for manpage
 ls *.man >/dev/null 2>&1
 if [ $? = 0 ]
@@ -113,7 +118,7 @@ then
   ls *.man |
   while read F
   do
-    sed '1 !d; s/^\.\\" //; s/ .*$//' < $F | (
+    sed '2 !d; s/^\.\\" //; s/ .*$//' < $F | (
       read WORD
       if [ "$WORD" != Copyright ]
       then
@@ -122,11 +127,6 @@ then
     )
   done
 fi
-
-# XXX change head script for scripts to
-# avoid #! line
-echo "1 r $CTMP" > $SHTMP
-cat $SHTMP $STTMP > $STMP
 
 # sharp comments at line 2 for shell script
 ls *.sh >/dev/null 2>&1
