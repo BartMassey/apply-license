@@ -1,0 +1,52 @@
+.TH APPLY-LICENSE 1  "6 September 2006"
+.\" Copyright (c) 2006 Bart Massey
+.\" All Rights Reserved
+.\" Please see end of file for license information
+.SH NAME
+apply-license \- apply a license in a directory
+.SH SYNOPSIS
+apply-license
+.BI [ -f ]
+.BI [ copying-file ]
+.SH DESCRIPTION
+.LP
+The apply-license script is used to apply a license to the
+source files in a directory.  The file COPYING should appear
+in the directory, and should be of the format: paragraph
+containing copyright; paragraph naming license; paragraphs
+with license.  The script will extract the relevant
+information from the COPYING file and apply it to the source
+code.  It will also mark the code as having been updated, so
+that future runs will be harmless.
+.SH OPTIONS
+.TP
+.B "-f"
+Override the fact that the source code has been previously a
+target of this script.
+.TP
+.I "copying-file"
+Extract copyright information from
+.IR "copying-file" .
+Default is COPYING in the current directory.
+The
+.I "copying-file"
+must consist of at least three paragraphs, seperated by
+blank lines.  The first paragraph should contain the
+copyright notice.  This would normally be of the form
+.nf
+
+  Copyright (c) 2006 Bart Massey
+  ALL RIGHTS RESERVED
+
+.fi
+The second paragraph should contain the name of the
+license, for example
+.nf
+
+  [This is the "MIT license"]
+
+.fi
+Subsequent paragraphs should contain the license text
+itself.
+.SH AUTHOR
+Bart Massey <bart@cs.pdx.edu>
