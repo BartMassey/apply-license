@@ -6,33 +6,32 @@
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
-.BI [ -f ]
 .BI [ copying-file ]
 .SH DESCRIPTION
 .LP
 The apply-license script is used to apply a license to the
-source files in a directory.  The file COPYING should appear
-in the directory, and should be of the format: paragraph
-containing copyright; paragraph naming license; paragraphs
-with license.  The script will extract the relevant
-information from the COPYING file and apply it to the source
-code.  It will also mark the code as having been updated, so
-that future runs will be harmless.
+source files in a directory.  The script will extract the relevant
+information from a
+license file and apply it to any source
+code it can find that does not already appear to have a
+copyright notice.  Source code is identified by
+suffix.  Currently recognized suffixes are ".c", ".h", ".y",
+".l", ".sh", and ".man"; the file "Makefile" is also
+currently processed.  Others may be added in the future.
 .SH OPTIONS
 .TP
-.B "-f"
-Override the fact that the source code has been previously a
-target of this script.
-.TP
 .I "copying-file"
-Extract copyright information from
+Extract copyright information from the license file
 .IR "copying-file" .
 Default is COPYING in the current directory.
 The
 .I "copying-file"
-must consist of at least three paragraphs, seperated by
-blank lines.  The first paragraph should contain the
-copyright notice.  This would normally be of the form
+must consist of at least three paragraphs, with paragraphs separated by
+a single blank line.  The first paragraph should contain the
+copyright notice.  The first word of the notice must be the
+word "Copyright" with this capitalization; this is used to
+detect previously-applied licenses and avoid re-application.
+The copyright notice would normally be of the form
 .nf
 
   Copyright (c) 2006 Bart Massey

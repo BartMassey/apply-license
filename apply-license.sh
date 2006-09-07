@@ -17,13 +17,7 @@ trap "rm -f $TMPFILES" 0 1 2 3 15
 # deal with args
 PGM="`basename $0`"
 USAGE="$PGM: usage: $PGM [-f] [copying-file]"
-NOFORCE="true"
 COPYING="COPYING"
-if [ $# -ge 1 ] && [ "$1" = "-f" ]
-then
-  NOFORCE="false"
-  shift
-fi
 if [ $# -eq 1 ]
 then
   COPYING=$1
@@ -32,11 +26,6 @@ fi
 if [ $# -ne 0 ]
 then
   echo "$USAGE" >&2
-  exit 1
-fi
-if $NOFORCE && [ -f .apply-license ]
-then
-  echo "$PGM: license already applied" >&2
   exit 1
 fi
 if [ ! -f "$COPYING" ]
@@ -86,7 +75,17 @@ then
 EOF
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  sedit *.[chyl] < $STMP
+  ls *.[chyl] |
+  while read F
+  do
+    sed '2 !d; s/^ \* //; s/ .*$//' < $F | (
+      read WORD
+      if [ "$WORD" != Copyright ]
+      then
+	sedit $F < $STMP
+      fi
+    )
+  done
 fi
 
 # sharp comments for Makefile
@@ -95,7 +94,13 @@ then
   echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  sedit Makefile < $STMP
+  sed '1 !d; s/^# //; s/ .*$//' < $Makefile | (
+    read WORD
+    if [ "$WORD" != Copyright ]
+    then
+      sedit Makefile < $STMP
+    fi
+  )
 fi
 
 # troff comments for manpage
@@ -105,7 +110,17 @@ then
   echo '1,$ s=^=.\\" =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  sedit *.man < $STMP
+  ls *.man |
+  while read F
+  do
+    sed '1 !d; s/^\.\\" //; s/ .*$//' < $F | (
+      read WORD
+      if [ "$WORD" != Copyright ]
+      then
+	sedit $F < $STMP
+      fi
+    )
+  done
 fi
 
 # XXX change head script for scripts to
@@ -120,11 +135,18 @@ then
   echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  sedit *.sh < $STMP
+  ls *.sh |
+  while read F
+  do
+    sed '2 !d; s/^# //; s/ .*$//' < $F | (
+      read WORD
+      if [ "$WORD" != Copyright ]
+      then
+        sedit $F < $STMP
+      fi
+    )
+  done
 fi
-
-# mark license as applied
-echo "License information applied by apply-license" > .apply-license
 
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated
