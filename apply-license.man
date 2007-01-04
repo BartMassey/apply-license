@@ -1,5 +1,5 @@
-.TH APPLY-LICENSE 1  "6 September 2006"
-.\" Copyright (c) 2006 Bart Massey
+.TH APPLY-LICENSE 1  "3 January 2007"
+.\" Copyright (c) 2006-2007 Bart Massey
 .\" All Rights Reserved
 .\" Please see the end of this file for license information.
 .SH NAME
@@ -16,8 +16,8 @@ license file and apply it to any source
 code it can find that does not already appear to have a
 copyright notice.  Source code is identified by
 suffix.  Currently recognized suffixes are ".c", ".h", ".y",
-".l", ".sh", and ".man"; the file "Makefile" is also
-currently processed.  The first line of a ".sh" file
+".l", ".sh", ".5c", and ".man"; the file "Makefile" is also
+currently processed.  The first line of a ".sh" or ".5c" file
 must be a "#!" line and is skipped.  The first
 line of a ".man" file must be a ".TH" line and is skipped.
 Other files may be added in the future.
@@ -37,7 +37,7 @@ detect previously-applied licenses and avoid re-application.
 The copyright notice would normally be of the form
 .nf
 
-  Copyright (c) 2006 Bart Massey
+  Copyright (c) 2007 Bart Massey
   ALL RIGHTS RESERVED
 
 .fi

@@ -1,6 +1,6 @@
 #!/bin/sh
-# Copyright (c) 2006 Bart Massey
-# All Rights Reserved
+# Copyright (c) 2006-2007 Bart Massey
+# ALL RIGHTS RESERVED
 # Please see the end of this file for license information.
 
 # many temporary files are needed
@@ -94,7 +94,7 @@ then
   echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  sed '1 !d; s/^# //; s/ .*$//' < $Makefile | (
+  sed '1 !d; s/^# //; s/ .*$//' < Makefile | (
     read WORD
     if [ "$WORD" != Copyright ]
     then
@@ -128,14 +128,14 @@ then
   done
 fi
 
-# sharp comments at line 2 for shell script
-ls *.sh >/dev/null 2>&1
+# sharp comments at line 2 for shell script or nickle
+ls *.sh *.5c >/dev/null 2>&1
 if [ $? = 0 ]
 then
   echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
-  ls *.sh |
+  ls *.sh *.5c |
   while read F
   do
     sed '2 !d; s/^# //; s/ .*$//' < $F | (
