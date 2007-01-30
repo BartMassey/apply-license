@@ -63,30 +63,33 @@ EOF
 cat $SHTMP $STTMP > $STMP
 
 # C comments for C-like code
-ls *.[chyl] >/dev/null 2>&1
-if [ $? = 0 ]
-then
-  cat <<'EOF' > $PTMP
-  1 i\
+for suff in c h y l css
+do
+  ls *.$suff >/dev/null 2>&1
+  if [ $? = 0 ]
+  then
+    cat <<'EOF' > $PTMP
+    1 i\
 /*
-  1,$ s=^= * =
-  $ a\
+    1,$ s=^= * =
+    $ a\
  */
 EOF
-  sed -f $PTMP $CFILE > $CTMP
-  sed -f $PTMP $LFILE > $LTMP
-  ls *.[chyl] |
-  while read F
-  do
-    sed '2 !d; s/^ \* //; s/ .*$//' < $F | (
-      read WORD
-      if [ "$WORD" != Copyright ]
-      then
-	sedit $F < $STMP
-      fi
-    )
-  done
-fi
+    sed -f $PTMP $CFILE > $CTMP
+    sed -f $PTMP $LFILE > $LTMP
+    ls *.$suff |
+    while read F
+    do
+      sed '2 !d; s/^ \* //; s/ .*$//' < $F | (
+	read WORD
+	if [ "$WORD" != Copyright ]
+	then
+	  sedit $F < $STMP
+	fi
+      )
+    done
+  fi
+done
 
 # sharp comments for Makefile
 if [ -f Makefile ]
@@ -129,24 +132,27 @@ then
 fi
 
 # sharp comments at line 2 for shell script or nickle
-ls *.sh *.5c >/dev/null 2>&1
-if [ $? = 0 ]
-then
-  echo '1,$ s=^=# =' > $PTMP
-  sed -f $PTMP $CFILE > $CTMP
-  sed -f $PTMP $LFILE > $LTMP
-  ls *.sh *.5c |
-  while read F
-  do
-    sed '2 !d; s/^# //; s/ .*$//' < $F | (
-      read WORD
-      if [ "$WORD" != Copyright ]
-      then
-        sedit $F < $STMP
-      fi
-    )
-  done
-fi
+for suff in sh 5c rb pl
+do
+  ls *.$suff >/dev/null 2>&1
+  if [ $? = 0 ]
+  then
+    echo '1,$ s=^=# =' > $PTMP
+    sed -f $PTMP $CFILE > $CTMP
+    sed -f $PTMP $LFILE > $LTMP
+    ls *.$suff |
+    while read F
+    do
+      sed '2 !d; s/^# //; s/ .*$//' < $F | (
+	read WORD
+	if [ "$WORD" != Copyright ]
+	then
+	  sedit $F < $STMP
+	fi
+      )
+    done
+  fi
+done
 
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated

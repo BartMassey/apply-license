@@ -10,17 +10,17 @@ apply-license
 .SH DESCRIPTION
 .LP
 The apply-license script is used to apply a license to the
-source files in a directory.  The script will extract the relevant
-information from a
-license file and apply it to any source
-code it can find that does not already appear to have a
-copyright notice.  Source code is identified by
-suffix.  Currently recognized suffixes are ".c", ".h", ".y",
-".l", ".sh", ".5c", and ".man"; the file "Makefile" is also
-currently processed.  The first line of a ".sh" or ".5c" file
-must be a "#!" line and is skipped.  The first
-line of a ".man" file must be a ".TH" line and is skipped.
-Other files may be added in the future.
+source files in a directory.  The script will extract the
+relevant information from a license file and apply it to any
+source code it can find that does not already appear to have
+a copyright notice.  Source code is identified by suffix.
+Currently recognized suffixes are ".c", ".h", ".y", ".l",
+".css", ".sh", ".5c", ".pl", ".rb" and ".man"; the file
+"Makefile" is also currently processed.  The first line of a
+".sh", ".5c", ".pl" or ".rb" file must be a "#!" line and
+is skipped.  The first line of a ".man" file must be a ".TH"
+line and is skipped.  Other files may be added in the
+future.
 .SH OPTIONS
 .TP
 .I "copying-file"
@@ -50,6 +50,15 @@ license, for example
 .fi
 Subsequent paragraphs should contain the license text
 itself.
+.SH BUGS
+.LP
+Empty files are not licensed.  This may not be a bug.
+.LP
+There should be a file-length below which the license is
+referenced rather than included.
+.LP
+Files without a suffix should be heuristically identified
+and licensed if possible.
 .SH AUTHOR
 Bart Massey <bart@cs.pdx.edu>
 
