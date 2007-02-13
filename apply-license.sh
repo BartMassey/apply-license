@@ -63,7 +63,7 @@ EOF
 cat $SHTMP $STTMP > $STMP
 
 # C comments for C-like code
-for suff in c h y l css
+for suff in c h y l css java
 do
   ls *.$suff >/dev/null 2>&1
   if [ $? = 0 ]
@@ -132,7 +132,7 @@ then
 fi
 
 # sharp comments at line 2 for shell script or nickle
-for suff in sh 5c rb pl
+for suff in sh awk 5c rb pl
 do
   ls *.$suff >/dev/null 2>&1
   if [ $? = 0 ]

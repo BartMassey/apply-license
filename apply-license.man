@@ -14,10 +14,10 @@ source files in a directory.  The script will extract the
 relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
-Currently recognized suffixes are ".c", ".h", ".y", ".l",
-".css", ".sh", ".5c", ".pl", ".rb" and ".man"; the file
+Currently recognized suffixes are ".java", ".c", ".h", ".y", ".l",
+".css", ".sh", ".awk", ".5c", ".pl", ".rb" and ".man"; the file
 "Makefile" is also currently processed.  The first line of a
-".sh", ".5c", ".pl" or ".rb" file must be a "#!" line and
+".sh", ".awk", ".5c", ".pl" or ".rb" file must be a "#!" line and
 is skipped.  The first line of a ".man" file must be a ".TH"
 line and is skipped.  Other files may be added in the
 future.
