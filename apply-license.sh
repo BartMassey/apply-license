@@ -106,6 +106,26 @@ then
   )
 fi
 
+# dash comments for haskell
+ls *.hs >/dev/null 2>&1
+if [ $? = 0 ]
+then
+  echo '1,$ s=^=--- =' > $PTMP
+  sed -f $PTMP $CFILE > $CTMP
+  sed -f $PTMP $LFILE > $LTMP
+  ls *.hs |
+  while read F
+  do
+    sed '1 !d; s/^--- //; s/ .*$//' < $F | (
+      read WORD
+      if [ "$WORD" != Copyright ]
+      then
+	sedit $F < $STMP
+      fi
+    )
+  done
+fi
+
 # XXX change head script to avoid first line
 # in subsequent processing
 echo "1 r $CTMP" > $SHTMP

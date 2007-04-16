@@ -15,7 +15,7 @@ relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
 Currently recognized suffixes are ".java", ".c", ".h", ".y", ".l",
-".css", ".sh", ".awk", ".5c", ".pl", ".rb" and ".man"; the file
+".css", ".sh", ".awk", ".5c", ".pl", ".rb", ".hs" and ".man"; the file
 "Makefile" is also currently processed.  The first line of a
 ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a "#!" line and
 is skipped.  The first line of a ".man" file must be a ".TH"
@@ -53,6 +53,8 @@ itself.
 .SH BUGS
 .LP
 Empty files are not licensed.  This may not be a bug.
+.LP
+Each subdirectory must be run separately.  This may not be a bug.
 .LP
 There should be a file-length below which the license is
 referenced rather than included.
