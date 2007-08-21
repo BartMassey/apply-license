@@ -3,21 +3,32 @@
 # ALL RIGHTS RESERVED
 # Please see the end of this file for license information.
 
+HEURISTIC=true
+
 # many temporary files are needed
 CFILE=/tmp/al-cfile.$$; TMPFILES="$CFILE"
+SCFILE=/tmp/al-scfile.$$; TMPFILES="$SCFILE"
 LFILE=/tmp/al-lfile.$$; TMPFILES="$TMPFILES $LFILE"
 CTMP=/tmp/al-copyright.$$; TMPFILES="$TMPFILES $CTMP"
 LTMP=/tmp/al-license.$$; TMPFILES="$TMPFILES $LTMP"
 SHTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $SHTMP"
 STTMP=/tmp/al-sedt.$$; TMPFILES="$TMPFILES $STTMP"
 STMP=/tmp/al-sed.$$; TMPFILES="$TMPFILES $STMP"
+SSTMP=/tmp/al-ssed.$$; TMPFILES="$TMPFILES $SSTMP"
 PTMP=/tmp/al-presed.$$; TMPFILES="$TMPFILES $PTMP"
 trap "rm -f $TMPFILES" 0 1 2 3 15
 
 # deal with args
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-f] [copying-file]"
+USAGE="$PGM: usage: $PGM [-l] [copying-file]"
 COPYING="COPYING"
+while true
+do
+  case $1 in
+  -l) HEURISTIC=false; shift;;
+  -*) echo "$USAGE" >>&2; exit 1;;
+  *)  break;;
+done
 if [ $# -eq 1 ]
 then
   COPYING=$1
@@ -34,10 +45,19 @@ then
   exit 1
 fi
 
-# create CFILE and LFILE
+# create SCFILE and CFILE
 sed '/^$/,$d' < $COPYING > $CFILE
+cat $CFILE > $SCFILE
+echo '' >> $SCFILE
+sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$SCFILE
+echo 'Please see the file $COPYING in the source' >>$SCFILE
+echo 'distribution of this software for license terms.' >>$SCFILE
 echo "Please see the end of this file for license information." >> $CFILE
+
+# create LFILE and measure its length for heuristic
 sed -e '1,/^$/d' -e '1,/^$/d' < $COPYING > $LFILE
+LFILELEN=`wc -l $LFILE`
+LFILELEN2=`expr $LFILELEN \* 2`
 
 # Build substitution sed script
 cat << EOF > $SHTMP |
@@ -61,6 +81,19 @@ cat << EOF > $STTMP |
 }
 EOF
 cat $SHTMP $STTMP > $STMP
+cat << EOF > $SSTMP |
+1 {
+ h
+ r $SCTMP
+ d
+}
+2 {
+ i\
+
+ x
+ G
+}
+EOF
 
 # C comments for C-like code
 for suff in c h y l css java
@@ -84,7 +117,12 @@ EOF
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  sedit $F < $STMP
+	  if [ `wc -l $F` -lt $LFILELEN2 ]
+	  then
+	    sedit $F < $SSTMP
+	  else
+	    sedit $F < $STMP
+	  fi
 	fi
       )
     done
@@ -101,7 +139,12 @@ then
     read WORD
     if [ "$WORD" != Copyright ]
     then
-      sedit Makefile < $STMP
+      if [ `wc -l $F` -lt $LFILELEN2 ]
+      then
+	sedit Makefile < $SSTMP
+      else
+	sedit Makefile < $STMP
+      fi
     fi
   )
 fi
@@ -120,7 +163,12 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	sedit $F < $STMP
+	if [ `wc -l $F` -lt $LFILELEN2 ]
+	then
+	  sedit $F < $SSTMP
+	else
+	  sedit $F < $STMP
+	fi
       fi
     )
   done
@@ -130,6 +178,7 @@ fi
 # in subsequent processing
 echo "1 r $CTMP" > $SHTMP
 cat $SHTMP $STTMP > $STMP
+echo "1 r $SCTMP" > $SSTMP
 
 # troff comments for manpage
 ls *.man >/dev/null 2>&1
@@ -145,7 +194,12 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	sedit $F < $STMP
+	if [ `wc -l $F` -lt $LFILELEN2 ]
+	then
+	  sedit $F < $SSTMP
+	else
+	  sedit $F < $STMP
+	fi
       fi
     )
   done
@@ -167,7 +221,12 @@ do
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  sedit $F < $STMP
+	  if [ `wc -l $F` -lt $LFILELEN2 ]
+	  then
+	    sedit $F < $SSTMP
+	  else
+	    sedit $F < $STMP
+	  fi
 	fi
       )
     done
