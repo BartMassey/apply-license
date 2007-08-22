@@ -11,6 +11,7 @@ SCFILE=/tmp/al-scfile.$$; TMPFILES="$SCFILE"
 LFILE=/tmp/al-lfile.$$; TMPFILES="$TMPFILES $LFILE"
 CTMP=/tmp/al-copyright.$$; TMPFILES="$TMPFILES $CTMP"
 LTMP=/tmp/al-license.$$; TMPFILES="$TMPFILES $LTMP"
+SCTMP=/tmp/al-scopyright.$$; TMPFILES="$TMPFILES $SCTMP"
 SHTMP=/tmp/al-sedh.$$; TMPFILES="$TMPFILES $SHTMP"
 STTMP=/tmp/al-sedt.$$; TMPFILES="$TMPFILES $STTMP"
 STMP=/tmp/al-sed.$$; TMPFILES="$TMPFILES $STMP"
@@ -51,8 +52,8 @@ sed '/^$/,$d' < $COPYING > $CFILE
 cat $CFILE > $SCFILE
 echo '' >> $SCFILE
 sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$SCFILE
-echo 'Please see the file $COPYING in the source' >>$SCFILE
-echo 'distribution of this software for license terms.' >>$SCFILE
+echo "Please see the file $COPYING in the source" >>$SCFILE
+echo "distribution of this software for license terms." >>$SCFILE
 echo "Please see the end of this file for license information." >> $CFILE
 
 # create LFILE and measure its length for heuristic
@@ -111,6 +112,7 @@ do
 EOF
     sed -f $PTMP $CFILE > $CTMP
     sed -f $PTMP $LFILE > $LTMP
+    sed -f $PTMP $SCFILE > $SCTMP
     ls *.$suff |
     while read F
     do
@@ -136,6 +138,7 @@ then
   echo '1,$ s=^=# =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
+  sed -f $PTMP $SCFILE > $SCTMP
   sed '1 !d; s/^# //; s/ .*$//' < Makefile | (
     read WORD
     if [ "$WORD" != Copyright ]
@@ -157,6 +160,7 @@ then
   echo '1,$ s=^=--- =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
+  sed -f $PTMP $SCFILE > $SCTMP
   ls *.hs |
   while read F
   do
@@ -188,6 +192,7 @@ then
   echo '1,$ s=^=.\\" =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
+  sed -f $PTMP $SCFILE > $SCTMP
   ls *.man |
   while read F
   do
@@ -215,6 +220,7 @@ do
     echo '1,$ s=^=# =' > $PTMP
     sed -f $PTMP $CFILE > $CTMP
     sed -f $PTMP $LFILE > $LTMP
+    sed -f $PTMP $SCFILE > $SCTMP
     ls *.$suff |
     while read F
     do
