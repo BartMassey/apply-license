@@ -26,8 +26,9 @@ while true
 do
   case $1 in
   -l) HEURISTIC=false; shift;;
-  -*) echo "$USAGE" >>&2; exit 1;;
+  -*) echo "$USAGE" >&2; exit 1;;
   *)  break;;
+  esac
 done
 if [ $# -eq 1 ]
 then
@@ -56,7 +57,7 @@ echo "Please see the end of this file for license information." >> $CFILE
 
 # create LFILE and measure its length for heuristic
 sed -e '1,/^$/d' -e '1,/^$/d' < $COPYING > $LFILE
-LFILELEN=`wc -l $LFILE`
+LFILELEN=`wc -l $LFILE | awk '{print $1;}'`
 LFILELEN2=`expr $LFILELEN \* 2`
 
 # Build substitution sed script
@@ -117,7 +118,7 @@ EOF
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if [ `wc -l $F` -lt $LFILELEN2 ]
+	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
 	    sedit $F < $SSTMP
 	  else
@@ -139,7 +140,7 @@ then
     read WORD
     if [ "$WORD" != Copyright ]
     then
-      if [ `wc -l $F` -lt $LFILELEN2 ]
+      if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
       then
 	sedit Makefile < $SSTMP
       else
@@ -163,7 +164,7 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if [ `wc -l $F` -lt $LFILELEN2 ]
+	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
 	  sedit $F < $SSTMP
 	else
@@ -194,7 +195,7 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if [ `wc -l $F` -lt $LFILELEN2 ]
+	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
 	  sedit $F < $SSTMP
 	else
@@ -221,7 +222,7 @@ do
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if [ `wc -l $F` -lt $LFILELEN2 ]
+	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
 	    sedit $F < $SSTMP
 	  else
