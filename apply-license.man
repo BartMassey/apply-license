@@ -6,6 +6,7 @@
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
+.BI [ -l ]
 .BI [ copying-file ]
 .SH DESCRIPTION
 .LP
@@ -22,6 +23,13 @@ is skipped.  The first line of a ".man" file must be a ".TH"
 line and is skipped.  Other files may be added in the
 future.
 .SH OPTIONS
+.TP
+.I "-l"
+By default, for each "short" file (less than twice the length
+of the license to be applied) apply-license will omit the
+actual license text and just put a reference to the COPYING
+file.  This flag ensures that every file, no matter how
+short, contains the full license text.  For the paranoid, mostly.
 .TP
 .I "copying-file"
 Extract copyright information from the license file
