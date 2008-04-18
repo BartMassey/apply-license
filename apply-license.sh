@@ -43,12 +43,17 @@ then
 fi
 if [ ! -f "$COPYING" ]
 then
-  echo "$PGM: can't find copying file" >&2
+  echo "$PGM: can't find copying file $COPYING" >&2
   exit 1
 fi
 
 # create SCFILE and CFILE
 sed '/^$/,$d' < $COPYING > $CFILE
+if [ "`read WORD WORDS < $CFILE; echo $WORD`" '!=' 'Copyright' ]
+then
+  echo "$PGM: bogus copying file $COPYING" >&2
+  exit 1
+fi
 cat $CFILE > $SCFILE
 echo '' >> $SCFILE
 sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$SCFILE
