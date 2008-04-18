@@ -188,14 +188,14 @@ fi
 ls *.el >/dev/null 2>&1
 if [ $? = 0 ]
 then
-  echo '1,$ s=^=\;\; =' > $PTMP
+  echo '1,$ s=^=;; =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
   sed -f $PTMP $SCFILE > $SCTMP
   ls *.el |
   while read F
   do
-    sed '1 !d; s/^\;+[ 	]+//; s/ .*$//' < $F | (
+    sed '1 !d; s/^;;*[ 	][ 	]*//; s/ .*$//' < $F | (
       read WORD
       if [ "$WORD" != Copyright ]
       then
