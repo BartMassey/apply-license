@@ -15,8 +15,10 @@ source files in a directory.  The script will extract the
 relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
-Currently recognized suffixes are ".java", ".c", ".h", ".y", ".l",
-".css", ".sh", ".awk", ".5c", ".pl", ".rb", ".hs" and ".man"; the file
+Currently recognized suffixes are ".java", ".c", ".h", ".y",
+".l" (lex, not lisp), ".el" (emacs lisp), ".css", ".sh",
+".awk", ".5c" (Nickle), ".pl", ".rb", ".hs" and ".man"; the
+file
 "Makefile" is also currently processed.  The first line of a
 ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a "#!" line and
 is skipped.  The first line of a ".man" file must be a ".TH"
@@ -28,7 +30,7 @@ future.
 By default, for each "short" file (less than twice the length
 of the license to be applied) apply-license will omit the
 actual license text and just put a reference to the COPYING
-file.  This flag ensures that every file, no matter how
+file.  The "-l" flag ensures that every file, no matter how
 short, contains the full license text.  For the paranoid, mostly.
 .TP
 .I "copying-file"
@@ -41,7 +43,9 @@ must consist of at least three paragraphs, with paragraphs separated by
 a single blank line.  The first paragraph should contain the
 copyright notice.  The first word of the notice must be the
 word "Copyright" with this capitalization; this is used to
-detect previously-applied licenses and avoid re-application.
+detect previously-applied licenses and avoid re-application,
+and to detect bogus copying-files.
+.LP
 The copyright notice would normally be of the form
 .nf
 
@@ -63,9 +67,6 @@ itself.
 Empty files are not licensed.  This may not be a bug.
 .LP
 Each subdirectory must be run separately.  This may not be a bug.
-.LP
-There should be a file-length below which the license is
-referenced rather than included.
 .LP
 Files without a suffix should be heuristically identified
 and licensed if possible.
