@@ -55,11 +55,11 @@ then
   exit 1
 fi
 cat $CFILE > $SCFILE
-echo '' >> $SCFILE
 sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$SCFILE
 echo "Please see the file $COPYING in the source" >>$SCFILE
 echo "distribution of this software for license terms." >>$SCFILE
-echo "Please see the end of this file for license information." >> $CFILE
+sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$CFILE
+echo "Please see the end of this file for license terms." >> $CFILE
 
 # create LFILE and measure its length for heuristic
 sed -e '1,/^$/d' -e '1,/^$/d' < $COPYING > $LFILE
