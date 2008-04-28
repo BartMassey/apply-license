@@ -1,4 +1,4 @@
-Copyright (C) <year> <author>
+Copyright © <year> <author>
 ALL RIGHTS RESERVED
 
 [This program is licensed under the "3-clause ('new') BSD License"]
