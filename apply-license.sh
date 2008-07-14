@@ -4,6 +4,10 @@
 # Please see the end of this file for license information.
 
 HEURISTIC=true
+# Get http://wiki.cs.pdx.edu/bartforge/sedit and
+# turn this on if you have no GNU-compatible sed
+#EDIT=sedit
+EDIT="sed --in-place=.orig -f -"
 
 # many temporary files are needed
 CFILE=/tmp/al-cfile.$$; TMPFILES="$CFILE"
@@ -127,9 +131,9 @@ EOF
 	then
 	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
-	    sedit $F < $SSTMP
+	    $EDIT $F < $SSTMP
 	  else
-	    sedit $F < $STMP
+	    $EDIT $F < $STMP
 	  fi
 	fi
       )
@@ -150,9 +154,9 @@ then
     then
       if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
       then
-	sedit Makefile < $SSTMP
+	$EDIT Makefile < $SSTMP
       else
-	sedit Makefile < $STMP
+	$EDIT Makefile < $STMP
       fi
     fi
   )
@@ -175,9 +179,9 @@ then
       then
 	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
-	  sedit $F < $SSTMP
+	  $EDIT $F < $SSTMP
 	else
-	  sedit $F < $STMP
+	  $EDIT $F < $STMP
 	fi
       fi
     )
@@ -201,9 +205,9 @@ then
       then
 	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
-	  sedit $F < $SSTMP
+	  $EDIT $F < $SSTMP
 	else
-	  sedit $F < $STMP
+	  $EDIT $F < $STMP
 	fi
       fi
     )
@@ -233,9 +237,9 @@ then
       then
 	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
-	  sedit $F < $SSTMP
+	  $EDIT $F < $SSTMP
 	else
-	  sedit $F < $STMP
+	  $EDIT $F < $STMP
 	fi
       fi
     )
@@ -261,9 +265,9 @@ do
 	then
 	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
-	    sedit $F < $SSTMP
+	    $EDIT $F < $SSTMP
 	  else
-	    sedit $F < $STMP
+	    $EDIT $F < $STMP
 	  fi
 	fi
       )
