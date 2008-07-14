@@ -129,7 +129,7 @@ EOF
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
 	    $EDIT $F < $SSTMP
 	  else
@@ -152,7 +152,7 @@ then
     read WORD
     if [ "$WORD" != Copyright ]
     then
-      if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+      if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
       then
 	$EDIT Makefile < $SSTMP
       else
@@ -177,7 +177,7 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -203,7 +203,7 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -235,7 +235,7 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -263,7 +263,7 @@ do
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
 	  then
 	    $EDIT $F < $SSTMP
 	  else
