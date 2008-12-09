@@ -3,6 +3,7 @@
 # ALL RIGHTS RESERVED
 # Please see the end of this file for license information.
 
+SHORT=true
 HEURISTIC=true
 # Get http://wiki.cs.pdx.edu/bartforge/sedit and
 # turn this on if you have no GNU-compatible sed
@@ -30,7 +31,8 @@ COPYING="COPYING"
 while true
 do
   case $1 in
-  -l) HEURISTIC=false; shift;;
+  -l) HEURISTIC=false; SHORT=false; shift;;
+  -s) HEURISTIC=false; SHORT=true; shift;;
   -*) echo "$USAGE" >&2; exit 1;;
   *)  break;;
   esac
@@ -129,7 +131,16 @@ EOF
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  if $HEURISTIC
+	  then
+	      if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	      then
+	         SHORT=true
+	      else
+	         SHORT=false
+	      fi
+	  fi
+	  if $SHORT
 	  then
 	    $EDIT $F < $SSTMP
 	  else
@@ -152,7 +163,16 @@ then
     read WORD
     if [ "$WORD" != Copyright ]
     then
-      if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+      if $HEURISTIC
+      then
+	  if [ `wc -l Makefile | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  then
+	     SHORT=true
+	  else
+	     SHORT=false
+	  fi
+      fi
+      if $SHORT
       then
 	$EDIT Makefile < $SSTMP
       else
@@ -177,7 +197,16 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC
+	then
+	    if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	    then
+	       SHORT=true
+	    else
+	       SHORT=false
+	    fi
+	fi
+	if $SHORT
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -188,22 +217,69 @@ then
   done
 fi
 
-# semi-semi comments for Emacs lisp
-ls *.el >/dev/null 2>&1
+# semi-semi comments for Emacs lisp and Common Lisp
+for suff in lisp el
+do
+  ls *.$suff >/dev/null 2>&1
+  if [ $? = 0 ]
+  then
+    echo '1,$ s=^=;; =' > $PTMP
+    sed -f $PTMP $CFILE > $CTMP
+    sed -f $PTMP $LFILE > $LTMP
+    sed -f $PTMP $SCFILE > $SCTMP
+    ls *.$suff |
+    while read F
+    do
+      sed '1 !d; s/^;;*[ 	][ 	]*//; s/ .*$//' < $F | (
+	read WORD
+	if [ "$WORD" != Copyright ]
+	then
+	  if $HEURISTIC
+	  then
+	      if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	      then
+		 SHORT=true
+	      else
+		 SHORT=false
+	      fi
+	  fi
+	  if $SHORT
+	  then
+	    $EDIT $F < $SSTMP
+	  else
+	    $EDIT $F < $STMP
+	  fi
+	fi
+      )
+    done
+  fi
+done
+
+# // comments for JavaScript
+ls *.js >/dev/null 2>&1
 if [ $? = 0 ]
 then
-  echo '1,$ s=^=;; =' > $PTMP
+  echo '1,$ s=^=// =' > $PTMP
   sed -f $PTMP $CFILE > $CTMP
   sed -f $PTMP $LFILE > $LTMP
   sed -f $PTMP $SCFILE > $SCTMP
-  ls *.el |
+  ls *.js |
   while read F
   do
-    sed '1 !d; s/^;;*[ 	][ 	]*//; s/ .*$//' < $F | (
+    sed '1 !d; s=^//*[ 	][ 	]*==; s/ .*$//' < $F | (
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC
+	then
+	    if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	    then
+	       SHORT=true
+	    else
+	       SHORT=false
+	    fi
+	fi
+	if $SHORT
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -235,7 +311,16 @@ then
       read WORD
       if [ "$WORD" != Copyright ]
       then
-	if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	if $HEURISTIC
+	then
+	    if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	    then
+	       SHORT=true
+	    else
+	       SHORT=false
+	    fi
+	fi
+	if $SHORT
 	then
 	  $EDIT $F < $SSTMP
 	else
@@ -263,7 +348,16 @@ do
 	read WORD
 	if [ "$WORD" != Copyright ]
 	then
-	  if $HEURISTIC && [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  if $HEURISTIC
+	  then
+	      if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	      then
+		 SHORT=true
+	      else
+		 SHORT=false
+	      fi
+	  fi
+	  if $SHORT
 	  then
 	    $EDIT $F < $SSTMP
 	  else
@@ -274,6 +368,41 @@ do
     done
   fi
 done
+
+# // comments at line 2 for PHP
+ls *.php >/dev/null 2>&1
+if [ $? = 0 ]
+then
+  echo '1,$ s=^=// =' > $PTMP
+  sed -f $PTMP $CFILE > $CTMP
+  sed -f $PTMP $LFILE > $LTMP
+  sed -f $PTMP $SCFILE > $SCTMP
+  ls *.php |
+  while read F
+  do
+    sed '2 !d; s=^// ==; s/ .*$//' < $F | (
+      read WORD
+      if [ "$WORD" != Copyright ]
+      then
+	if $HEURISTIC
+	then
+	    if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	    then
+	       SHORT=true
+	    else
+	       SHORT=false
+	    fi
+	fi
+	if $SHORT
+	then
+	  $EDIT $F < $SSTMP
+	else
+	  $EDIT $F < $STMP
+	fi
+      fi
+    )
+  done
+fi
 
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated

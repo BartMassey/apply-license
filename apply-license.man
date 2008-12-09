@@ -6,7 +6,7 @@
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
-.BI [ -l ]
+.BI [ -l | -s ]
 .BI [ copying-file ]
 .SH DESCRIPTION
 .LP
@@ -15,14 +15,15 @@ source files in a directory.  The script will extract the
 relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
-Currently recognized suffixes are ".java", ".c", ".h", ".y",
-".l" (lex, not lisp), ".el" (emacs lisp), ".css", ".sh",
-".awk", ".5c" (Nickle), ".pl", ".rb", ".hs" and ".man"; the
-file "Makefile" is also currently processed.  The first line of a
-".sh", ".awk", ".5c", ".pl" or ".rb" file must be a "#!" line and
-is skipped.  The first line of a ".man" file must be a ".TH"
-line and is skipped.  Other files may be added in the
-future.
+Currently recognized suffixes are ".java", ".js"
+(JavaScript), ".c", ".h", ".y", ".l" (lex, not lisp),
+".lisp" (Common Lisp), ".el" (emacs lisp), ".css", ".sh",
+".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs" and ".man"; the
+file "Makefile" is also currently processed.  The first line
+of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
+"#!" line and is skipped.  The first line of a ".man" file
+must be a ".TH" line and is skipped.  Other files may be
+added in the future.
 .SH OPTIONS
 .TP
 .I "-l"
@@ -31,6 +32,11 @@ of the license to be applied) apply-license will omit the
 actual license text and just put a reference to the COPYING
 file.  The "-l" flag ensures that every file, no matter how
 short, contains the full license text.  For the paranoid, mostly.
+.TP
+.I "-s"
+The "-s" flag ensures that every file, no matter how
+long, contains just a pointer to the license text.  For
+those wanting to avoid clutter.
 .TP
 .I "copying-file"
 Extract copyright information from the license file
