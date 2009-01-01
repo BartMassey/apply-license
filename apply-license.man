@@ -18,8 +18,8 @@ a copyright notice.  Source code is identified by suffix.
 Currently recognized suffixes are ".java", ".js"
 (JavaScript), ".c", ".h", ".y", ".l" (lex, not lisp),
 ".lisp" (Common Lisp), ".el" (emacs lisp), ".css", ".sh",
-".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs" and ".man"; the
-file "Makefile" is also currently processed.  The first line
+".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs", ".man"
+and "tex"; the file "Makefile" is also currently processed.  The first line
 of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
 "#!" line and is skipped.  The first line of a ".man" file
 must be a ".TH" line and is skipped.  Other files may be
