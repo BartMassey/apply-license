@@ -6,7 +6,7 @@
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
-.BI [ -l | -s ]
+.BI [ -s | -l | -h ]
 .BI [ copying-file ]
 .SH DESCRIPTION
 .LP
@@ -27,16 +27,21 @@ added in the future.
 .SH OPTIONS
 .TP
 .I "-l"
-By default, for each "short" file (less than twice the length
+This flag ensures that every file, no matter how
+short, contains the full license text.  For the paranoid,
+mostly.
+.TP
+.I "-h"
+For each "short" file (less than twice the length
 of the license to be applied) apply-license will omit the
 actual license text and just put a reference to the COPYING
-file.  The "-l" flag ensures that every file, no matter how
-short, contains the full license text.  For the paranoid, mostly.
+file.  This heuristic is intended as a compromise between
+the "-s" and "-l" options.
 .TP
 .I "-s"
-The "-s" flag ensures that every file, no matter how
-long, contains just a pointer to the license text.  For
-those wanting to avoid clutter.
+This flag (the default) ensures that every file, no
+matter how long, contains just a pointer to the license
+text.  For those wanting to avoid clutter.
 .TP
 .I "copying-file"
 Extract copyright information from the license file
