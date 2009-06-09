@@ -4,7 +4,7 @@
 # Please see the end of this file for license information.
 
 SHORT=true
-HEURISTIC=true
+HEURISTIC=false
 # Get http://wiki.cs.pdx.edu/bartforge/sedit and
 # turn this on if you have no GNU-compatible sed
 #EDIT=sedit
@@ -26,11 +26,12 @@ trap "rm -f $TMPFILES" 0 1 2 3 15
 
 # deal with args
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-l] [copying-file]"
+USAGE="$PGM: usage: $PGM [-s|-l|-h] [copying-file]"
 COPYING="COPYING"
 while true
 do
   case $1 in
+  -h) HEURISTIC=true; shift;;
   -l) HEURISTIC=false; SHORT=false; shift;;
   -s) HEURISTIC=false; SHORT=true; shift;;
   -*) echo "$USAGE" >&2; exit 1;;
