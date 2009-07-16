@@ -74,7 +74,7 @@ LFILELEN=`wc -l $LFILE | awk '{print $1;}'`
 LFILELEN2=`expr $LFILELEN \* 2`
 
 # Build substitution sed script
-cat << EOF > $SHTMP |
+cat << EOF > $SHTMP
 1 {
  h
  r $CTMP
@@ -87,7 +87,7 @@ cat << EOF > $SHTMP |
  G
 }
 EOF
-cat << EOF > $STTMP |
+cat << EOF > $STTMP
 \$ {
  a\
 
@@ -95,7 +95,7 @@ cat << EOF > $STTMP |
 }
 EOF
 cat $SHTMP $STTMP > $STMP
-cat << EOF > $SSTMP |
+cat << EOF > $SSTMP
 1 {
  h
  r $SCTMP
