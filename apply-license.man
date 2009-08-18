@@ -7,6 +7,7 @@ apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
 .BI [ -s | -l | -h ]
+.BI [ -r ]
 .BI [ copying-file ]
 .SH DESCRIPTION
 .LP
@@ -43,6 +44,9 @@ the "-s" and "-l" options.
 This flag (the default) ensures that every file, no
 matter how long, contains just a pointer to the license
 text.  For those wanting to avoid clutter.
+.TP
+.I "-r"
+This flag makes apply-license recurse into subdirectories.
 .TP
 .I "copying-file"
 Extract copyright information from the license file

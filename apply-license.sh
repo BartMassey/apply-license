@@ -5,6 +5,7 @@
 
 SHORT=true
 HEURISTIC=false
+RECURSIVE=false
 # Get http://wiki.cs.pdx.edu/bartforge/sedit and
 # turn this on if you have no GNU-compatible sed
 #EDIT=sedit
@@ -26,7 +27,7 @@ trap "rm -f $TMPFILES" 0 1 2 3 15
 
 # deal with args
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-s|-l|-h] [copying-file]"
+USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [copying-file]"
 COPYING="COPYING"
 while true
 do
@@ -34,6 +35,7 @@ do
   -h) HEURISTIC=true; shift;;
   -l) HEURISTIC=false; SHORT=false; shift;;
   -s) HEURISTIC=false; SHORT=true; shift;;
+  -r) RECURSIVE=true; shift;;
   -*) echo "$USAGE" >&2; exit 1;;
   *)  break;;
   esac
@@ -61,9 +63,10 @@ then
   echo "$PGM: bogus copying file $COPYING" >&2
   exit 1
 fi
+COPYBASE="`basename \"$COPYING\"`"
 cat $CFILE > $SCFILE
 sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$SCFILE
-echo "Please see the file $COPYING in the source" >>$SCFILE
+echo "Please see the file $COPYBASE in the source" >>$SCFILE
 echo "distribution of this software for license terms." >>$SCFILE
 sed -e '1,/^$/d' -e '/^$/,$d' < $COPYING >>$CFILE
 echo "Please see the end of this file for license terms." >> $CFILE
@@ -477,6 +480,32 @@ then
       fi
     )
   done
+fi
+
+if $RECURSIVE
+then
+    if $HEURISTIC
+    then
+	FORMAT="-h"
+    else
+	if $SHORT
+	then
+	    FORMAT="-s"
+	else
+	    FORMAT="-l"
+        fi
+    fi
+    case "$COPYING" in
+    /*) ;;
+    *)  COPYING=../"$COPYING" ;;
+    esac
+    ls |
+    while read F
+    do
+	[ -d "$F" ] || continue
+	( cd "$F"
+	  $0 -r $FORMAT "$COPYING" )
+    done
 fi
 
 # Permission is hereby granted, free of charge, to any person
