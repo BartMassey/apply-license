@@ -1,0 +1,3 @@
+* Completely rework to allow command-line files
+* Autotool
+* Allow license file creation from data directory
