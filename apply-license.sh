@@ -131,7 +131,7 @@ function edit1 {
   else 
     ETMP=$STMP
   fi
-  if $DELETE && head -2 $F | grep -wiq copyright
+  if $DELETE
   then
     ( cat <<'EOF'
 3,${p;d}
