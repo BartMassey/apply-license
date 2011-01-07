@@ -14,6 +14,11 @@ DELETE=false
 # turn this on if you have no GNU-compatible sed
 #EDIT=sedit
 EDIT="sed --in-place=.orig -f -"
+# If you are using sedit, then there is no
+# convenient way to edit without backing
+# up, so comment this out and lose the "-d"
+# capability.
+EDITX="sed --in-place -f -"
 
 # many temporary files are needed
 CFILE=/tmp/al-cfile.$$; TMPFILES="$CFILE"
@@ -31,7 +36,12 @@ trap "rm -f $TMPFILES" 0 1 2 3 15
 
 # deal with args
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [-d] [copying-file]"
+if [ "$EDITX" = "" ]
+then
+  USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [copying-file]"
+else
+  USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [-d] [copying-file]"
+fi  
 COPYING="COPYING"
 while true
 do
@@ -40,7 +50,14 @@ do
   -l) HEURISTIC=false; SHORT=false; shift;;
   -s) HEURISTIC=false; SHORT=true; shift;;
   -r) RECURSIVE=true; shift;;
-  -d) DELETE=true; shift;;
+  -d) if [ "$EDITX" = "" ]
+      then
+        echo "$USAGE" >&2
+	exit 1
+      else
+        DELETE=true; shift
+      fi
+      ;;
   -*) echo "$USAGE" >&2; exit 1;;
   *)  break;;
   esac
@@ -134,14 +151,16 @@ function edit1 {
   else 
     ETMP=$STMP
   fi
-  if $DELETE
+  if head -2 $F | grep -qiw copyright
   then
-    ( cat <<'EOF'
+    if $DELETE
+    then
+      $EDIT $F <<'EOF'
 3,${p;d}
 /\<[Cc][Oo][Pp][Yy][Rr][Ii][Gg][Hh][Tt]\>/d
 EOF
-      cat $ETMP
-    ) | $EDIT $F
+      $EDITX $F < $ETMP
+    fi
   else
     $EDIT $F < $ETMP
   fi
@@ -243,6 +262,7 @@ then
       FORMAT="-l"
     fi
   fi
+  $DELETE && DFLAG="-d"
   case "$COPYING" in
   /*) ;;
   *)  COPYING=../"$COPYING" ;;
@@ -252,6 +272,6 @@ then
   do
     [ -d "$F" ] || continue
     ( cd "$F"
-      $0 -r $FORMAT "$COPYING" )
+      $0 -r $FORMAT $DFLAG "$COPYING" )
   done
 fi
