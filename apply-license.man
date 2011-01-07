@@ -1,7 +1,8 @@
-.TH APPLY-LICENSE 1  "2 July 2007"
-.\" Copyright (c) 2006-2007 Bart Massey
-.\" All Rights Reserved
-.\" Please see the end of this file for license information.
+.TH APPLY-LICENSE 1  "6 January 2011"
+.\" Copyright © 2011 Bart Massey
+.\" [This software is released under the "MIT License"]
+.\" Please see the file COPYING in the source
+.\" distribution of this software for license terms.
 .SH NAME
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
@@ -28,10 +29,10 @@ must be a ".TH" line and is skipped.  Other files may be
 added in the future.
 .SH OPTIONS
 .TP
-.I "-l"
-This flag ensures that every file, no matter how
-short, contains the full license text.  For the paranoid,
-mostly.
+.I "-d"
+If an existing copyright notice is found in the file, delete
+it before proceeding. This is currently very simple and
+crude, so check its work afterward.
 .TP
 .I "-h"
 For each "short" file (less than twice the length
@@ -40,13 +41,18 @@ actual license text and just put a reference to the COPYING
 file.  This heuristic is intended as a compromise between
 the "-s" and "-l" options.
 .TP
+.I "-l"
+This flag ensures that every file, no matter how
+short, contains the full license text.  For the paranoid,
+mostly.
+.TP
+.I "-r"
+This flag makes apply-license recurse into subdirectories.
+.TP
 .I "-s"
 This flag (the default) ensures that every file, no
 matter how long, contains just a pointer to the license
 text.  For those wanting to avoid clutter.
-.TP
-.I "-r"
-This flag makes apply-license recurse into subdirectories.
 .TP
 .I "copying-file"
 Extract copyright information from the license file
@@ -87,25 +93,3 @@ Files without a suffix should be heuristically identified
 and licensed if possible.
 .SH AUTHOR
 Bart Massey <bart@cs.pdx.edu>
-
-.\" Permission is hereby granted, free of charge, to any person
-.\" obtaining a copy of this software and associated
-.\" documentation files (the "Software"), to deal in the
-.\" Software without restriction, including without limitation
-.\" the rights to use, copy, modify, merge, publish, distribute,
-.\" sublicense, and/or sell copies of the Software, and to
-.\" permit persons to whom the Software is furnished to do so,
-.\" subject to the following conditions:
-.\" 
-.\" The above copyright notice and this permission notice shall
-.\" be included in all copies or substantial portions of the
-.\" Software.
-.\" 
-.\" THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-.\" KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-.\" WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-.\" PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-.\" OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-.\" OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-.\" OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-.\" SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
