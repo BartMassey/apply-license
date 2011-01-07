@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright © 2011 Bart Massey
 
 LIBDIR=/usr/local/lib/apply-license
@@ -6,6 +6,7 @@ LIBDIR=/usr/local/lib/apply-license
 SHORT=true
 HEURISTIC=false
 RECURSIVE=false
+DELETE=false
 # Get http://wiki.cs.pdx.edu/bartforge/sedit and
 # turn this on if you have no GNU-compatible sed
 #EDIT=sedit
@@ -112,11 +113,95 @@ cat << EOF > $SSTMP
 }
 EOF
 
+function edit1 {
+  F="$1"
+  if head -2 $F | grep -wiq copyright
+  then
+      :
+  else
+      if $HEURISTIC
+      then
+	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+	  then
+	     SHORT=true
+	  else
+	     SHORT=false
+	  fi
+      fi
+      if $SHORT
+      then
+	$EDIT $F < $SSTMP
+      else
+	$EDIT $F < $STMP
+      fi
+    fi
+  fi
+}
+
+function makestuff {
+  sed -f $PTMP $CFILE > $CTMP
+  sed -f $PTMP $LFILE > $LTMP
+  sed -f $PTMP $SCFILE > $SCTMP
+}
+
+function editfiles {
+  for F in $*
+  do
+      [ -f "$F" ] && makestuff && edit1 $F
+  done
+}
+
+function edit {
+  for suff in $*
+  do
+    ls *.$suff >/dev/null 2>&1
+    if [ $? = 0 ]
+    then
+      makestuff
+      ls *.$suff |
+      while read F
+      do
+	  edit1 $F
+      done
+    fi
+  done
+}
+
 # Process a bunch of filetypes
-for i in "$LIBDIR"/1/*.sh
-do
-    . $i
-done
+
+# C comments for C-like code
+cat <<'EOF' > $PTMP
+    1 i\
+/*
+    1,$ s=^= * =
+    $ a\
+ */
+EOF
+edit c h y l css java
+
+# dash comments for haskell
+echo '1,$ s=^=-- =' > $PTMP
+edit hs 
+
+# // comments for JavaScript
+echo '1,$ s=^=// =' > $PTMP
+edit js
+
+# semi comments for Emacs lisp and Common Lisp
+echo '1,$ s=^=; =' > $PTMP
+edit lisp el
+
+# dnl comments for m4
+echo '1,$ s=^=dnl =' > $PTMP
+edit m4
+
+# sharp comments for Makefile
+echo '1,$ s=^=# =' > $PTMP
+editfiles Makefile makefile
+
+# percent comments for TeX
+echo '1,$ s=^=% =' > $PTMP
+edit tex cls sty
 
 # XXX change head script to avoid first line
 # in subsequent processing
@@ -124,10 +209,17 @@ echo "1 r $CTMP" > $SHTMP
 cat $SHTMP $STTMP > $STMP
 echo "1 r $SCTMP" > $SSTMP
 
-for i in "$LIBDIR"/2/*.sh
-do
-    . $i
-done
+# // comments at line 2 for PHP
+echo '1,$ s=^=// =' > $PTMP
+edit php
+
+# sharp comments at line 2 for shell script, nickle, etc
+echo '1,$ s=^=# =' > $PTMP
+edit sh awk 5c rb pl
+
+# troff comments for manpage
+echo '1,$ s=^=.\\" =' > $PTMP
+edit man man1 man2 man3 man4 man5 man6 man7 man8 man9
 
 if $RECURSIVE
 then
