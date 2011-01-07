@@ -1,5 +1,4 @@
 Copyright © <year> <author>
-ALL RIGHTS RESERVED
 
 [This program is licensed under the LGPL version 3 or later.]
 
