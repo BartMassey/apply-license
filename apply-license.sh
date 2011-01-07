@@ -28,7 +28,7 @@ trap "rm -f $TMPFILES" 0 1 2 3 15
 
 # deal with args
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [copying-file]"
+USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [-d] [copying-file]"
 COPYING="COPYING"
 while true
 do
@@ -37,6 +37,7 @@ do
   -l) HEURISTIC=false; SHORT=false; shift;;
   -s) HEURISTIC=false; SHORT=true; shift;;
   -r) RECURSIVE=true; shift;;
+  -d) DELETE=true; shift;;
   -*) echo "$USAGE" >&2; exit 1;;
   *)  break;;
   esac
@@ -115,26 +116,31 @@ EOF
 
 function edit1 {
   F="$1"
-  if head -2 $F | grep -wiq copyright
+  if $HEURISTIC
   then
-      :
-  else
-      if $HEURISTIC
-      then
-	  if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
-	  then
-	     SHORT=true
-	  else
-	     SHORT=false
-	  fi
-      fi
-      if $SHORT
-      then
-	$EDIT $F < $SSTMP
-      else
-	$EDIT $F < $STMP
-      fi
+    if [ `wc -l $F | awk '{print $1;}'` -lt $LFILELEN2 ]
+    then
+      SHORT=true
+    else
+      SHORT=false
     fi
+  fi
+  if $SHORT
+  then
+    ETMP=$SSTMP
+  else 
+    ETMP=$STMP
+  fi
+  if $DELETE && head -2 $F | grep -wiq copyright
+  then
+    ( cat <<'EOF'
+3,${p;d}
+/\<[Cc][Oo][Pp][Yy][Rr][Ii][Gg][Hh][Tt]\>/d
+EOF
+      cat $ETMP
+    ) | $EDIT $F
+  else
+    $EDIT $F < $ETMP
   fi
 }
 
@@ -147,7 +153,7 @@ function makestuff {
 function editfiles {
   for F in $*
   do
-      [ -f "$F" ] && makestuff && edit1 $F
+    [ -f "$F" ] && makestuff && edit1 $F
   done
 }
 
@@ -161,7 +167,7 @@ function edit {
       ls *.$suff |
       while read F
       do
-	  edit1 $F
+	edit1 $F
       done
     fi
   done
@@ -171,10 +177,10 @@ function edit {
 
 # C comments for C-like code
 cat <<'EOF' > $PTMP
-    1 i\
+1 i\
 /*
-    1,$ s=^= * =
-    $ a\
+1,$ s=^= * =
+$ a\
  */
 EOF
 edit c h y l css java
@@ -223,26 +229,26 @@ edit man man1 man2 man3 man4 man5 man6 man7 man8 man9
 
 if $RECURSIVE
 then
-    if $HEURISTIC
+  if $HEURISTIC
+  then
+    FORMAT="-h"
+  else
+    if $SHORT
     then
-	FORMAT="-h"
+      FORMAT="-s"
     else
-	if $SHORT
-	then
-	    FORMAT="-s"
-	else
-	    FORMAT="-l"
-        fi
+      FORMAT="-l"
     fi
-    case "$COPYING" in
-    /*) ;;
-    *)  COPYING=../"$COPYING" ;;
-    esac
-    ls |
-    while read F
-    do
-	[ -d "$F" ] || continue
-	( cd "$F"
-	  $0 -r $FORMAT "$COPYING" )
-    done
+  fi
+  case "$COPYING" in
+  /*) ;;
+  *)  COPYING=../"$COPYING" ;;
+  esac
+  ls |
+  while read F
+  do
+    [ -d "$F" ] || continue
+    ( cd "$F"
+      $0 -r $FORMAT "$COPYING" )
+  done
 fi
