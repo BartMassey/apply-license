@@ -21,7 +21,7 @@ Currently recognized suffixes are ".java", ".js"
 (JavaScript), ".c", ".h", ".y", ".l" (lex, not lisp),
 ".lisp" (Common Lisp), ".el" (emacs lisp), ".css", ".sh",
 ".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs", ".man",
-".tex", ".cls", ".sty", ".m4";
+".tex", ".cls", ".sty", ".m4", ".hs", ".cabal";
 the file "Makefile" is also processed.  The first line
 of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
 "#!" line and is skipped.  The first line of a ".man" file
@@ -60,18 +60,18 @@ Extract copyright information from the license file
 Default is COPYING in the current directory.
 The
 .I "copying-file"
-must consist of at least three paragraphs, with paragraphs separated by
-a single blank line.  The first paragraph should contain the
-copyright notice.  The first word of the notice must be the
-word "Copyright" with this capitalization; this is used to
-detect previously-applied licenses and avoid re-application,
-and to detect bogus copying-files.
+must consist of at least three paragraphs, with paragraphs
+separated by a single blank line.  The first paragraph
+should contain the copyright notice.  The notice should
+contain the word "Copyright" (preferably in this
+capitalization); this is used to detect previously-applied
+licenses and avoid re-application, and to detect bogus
+copying-files.
 .LP
 The copyright notice would normally be of the form
 .nf
 
-  Copyright (c) 2007 Bart Massey
-  ALL RIGHTS RESERVED
+  Copyright \[co] 2011 Bart Massey
 
 .fi
 The second paragraph should contain the name of the
@@ -87,9 +87,9 @@ itself.
 .LP
 Empty files are not licensed.  This may not be a bug.
 .LP
-Each subdirectory must be run separately.  This may not be a bug.
-.LP
 Files without a suffix should be heuristically identified
 and licensed if possible.
+.LP
+Scripts without #! lines should be processed properly.
 .SH AUTHOR
 Bart Massey <bart@cs.pdx.edu>

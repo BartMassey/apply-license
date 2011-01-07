@@ -207,9 +207,9 @@ $ a\
 EOF
 edit c h y l css java
 
-# dash comments for haskell
+# dash comments for Haskell
 echo '1,$ s=^=-- =' > $PTMP
-edit hs 
+edit hs cabal
 
 # // comments for JavaScript
 echo '1,$ s=^=// =' > $PTMP
@@ -247,7 +247,7 @@ edit sh awk 5c rb pl
 
 # troff comments for manpage
 echo '1,$ s=^=.\\" =' > $PTMP
-edit man man1 man2 man3 man4 man5 man6 man7 man8 man9
+edit man
 
 if $RECURSIVE
 then
