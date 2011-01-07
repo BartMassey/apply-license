@@ -1,3 +1,5 @@
-* Completely rework to allow command-line files
+* Allow command-line files
 * Autotool
 * Allow license file creation from data directory
+* Process scripts without #! lines properly
+* Heuristically process unknown files
