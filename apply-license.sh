@@ -215,9 +215,9 @@ edit hs cabal
 echo '1,$ s=^=// =' > $PTMP
 edit js
 
-# semi comments for Emacs lisp and Common Lisp
+# semi comments for Emacs lisp, Common Lisp, Scheme
 echo '1,$ s=^=; =' > $PTMP
-edit lisp el
+edit lisp el scm
 
 # dnl comments for m4
 echo '1,$ s=^=dnl =' > $PTMP

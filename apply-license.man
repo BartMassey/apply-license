@@ -18,8 +18,8 @@ relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
 Currently recognized suffixes are ".java", ".js"
-(JavaScript), ".c", ".h", ".y", ".l" (lex, not lisp),
-".lisp" (Common Lisp), ".el" (emacs lisp), ".css", ".sh",
+(JavaScript), ".c", ".h", ".y", ".l" (Lex, not lisp),
+".lisp" (Common Lisp), ".el" (Emacs Lisp), ".scm" (Scheme), ".css", ".sh",
 ".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs", ".man",
 ".tex", ".cls", ".sty", ".m4", ".hs", ".cabal";
 the file "Makefile" is also processed.  The first line
