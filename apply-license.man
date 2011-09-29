@@ -21,7 +21,7 @@ Currently recognized suffixes are ".java", ".js"
 (JavaScript), ".c", ".h", ".y", ".l" (Lex, not lisp),
 ".lisp" (Common Lisp), ".el" (Emacs Lisp), ".scm" (Scheme), ".css", ".sh",
 ".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs", ".man",
-".tex", ".cls", ".sty", ".m4", ".hs", ".cabal";
+".tex", ".cls", ".sty", ".m4", ".hs", ".cabal", ".py";
 the file "Makefile" is also processed.  The first line
 of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
 "#!" line and is skipped.  The first line of a ".man" file

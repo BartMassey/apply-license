@@ -243,7 +243,7 @@ edit php
 
 # sharp comments at line 2 for shell script, nickle, etc
 echo '1,$ s=^=# =' > $PTMP
-edit sh awk 5c rb pl
+edit sh awk 5c rb pl py
 
 # troff comments for manpage
 echo '1,$ s=^=.\\" =' > $PTMP
