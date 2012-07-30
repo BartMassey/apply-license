@@ -91,5 +91,12 @@ Files without a suffix should be heuristically identified
 and licensed if possible.
 .LP
 Scripts without #! lines should be processed properly.
+.LP
+If delete mode is not specified, a file with a copyright
+already in it is silently ignored. This can lead to problems
+if the cruddy copyright-detection heuristic (currently "is
+the word 'copyright' in there?") fails. See
+http://github.com/BartMassey/emacs-copyright
+for an ugly example.
 .SH AUTHOR
 Bart Massey <bart@cs.pdx.edu>
