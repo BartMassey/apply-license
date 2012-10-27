@@ -227,9 +227,9 @@ edit m4
 echo '1,$ s=^=# =' > $PTMP
 editfiles Makefile makefile
 
-# percent comments for TeX
+# percent comments for TeX and Matlab/Octave
 echo '1,$ s=^=% =' > $PTMP
-edit tex cls sty
+edit tex cls sty m
 
 # XXX change head script to avoid first line
 # in subsequent processing
