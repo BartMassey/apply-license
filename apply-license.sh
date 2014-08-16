@@ -101,13 +101,12 @@ LFILELEN2=`expr $LFILELEN \* 2`
 # Build substitution sed script
 cat << EOF > $SHTMP
 1 {
- h
+ /^#!/p
+ /^#!/!H
  r $CTMP
  d
 }
 2 {
- i\
-
  x
  G
 }
@@ -231,17 +230,17 @@ editfiles Makefile makefile
 echo '1,$ s=^=% =' > $PTMP
 edit tex cls sty m
 
-# XXX change head script to avoid first line
-# in subsequent processing
-echo "1 r $CTMP" > $SHTMP
-cat $SHTMP $STTMP > $STMP
-echo "1 r $SCTMP" > $SSTMP
+## XXX change head script to avoid first line
+## in subsequent processing
+#echo "1 r $CTMP" > $SHTMP
+#cat $SHTMP $STTMP > $STMP
+#echo "1 r $SCTMP" > $SSTMP
 
-# // comments at line 2 for PHP
+# // comments for PHP
 echo '1,$ s=^=// =' > $PTMP
 edit php
 
-# sharp comments at line 2 for shell script, nickle, etc
+# sharp comments for shell script, nickle, etc
 echo '1,$ s=^=# =' > $PTMP
 edit sh awk 5c rb pl py
 
