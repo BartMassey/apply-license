@@ -121,13 +121,12 @@ EOF
 cat $SHTMP $STTMP > $STMP
 cat << EOF > $SSTMP
 1 {
- h
+ /^#!/p
+ /^#!/!H
  r $SCTMP
  d
 }
 2 {
- i\
-
  x
  G
 }
