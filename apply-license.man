@@ -17,12 +17,38 @@ source files in a directory.  The script will extract the
 relevant information from a license file and apply it to any
 source code it can find that does not already appear to have
 a copyright notice.  Source code is identified by suffix.
-Currently recognized suffixes are ".java", ".js"
-(JavaScript), ".c", ".h", ".y", ".l" (Lex, not lisp),
-".lisp" (Common Lisp), ".el" (Emacs Lisp), ".scm" (Scheme), ".css", ".sh",
-".awk", ".5c" (Nickle), ".php", ".pl", ".rb", ".hs", ".man",
-".tex", ".cls", ".sty", ".m4", ".hs", ".cabal", ".py", ".m" (Matlab/Octave);
-the file "Makefile" is also processed.  The first line
+Currently recognized suffixes are
+".5c" (Nickle),
+".awk",
+".c",
+".cabal",
+".cc" (C++),
+".cls" (LaTeX class),
+".cpp" (C++),
+".css",
+".el" (Emacs Lisp),
+".h",
+".hs",
+".java",
+".js" (JavaScript),
+".l" (Lex, not lisp),
+".lisp" (Common Lisp),
+".m" (Matlab/Octave),
+".m4",
+".man",
+".php",
+".pl",
+".py",
+".rb",
+".rs",
+".scm" (Scheme),
+".sh",
+".sty" (LaTeX style),
+".tex",
+".y" (Yacc);
+the file "Makefile" (but not "makefile") is also processed.
+.LP
+The first line
 of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
 "#!" line and is skipped.  The first line of a ".man" file
 must be a ".TH" line and is skipped.  Other files may be

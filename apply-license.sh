@@ -173,7 +173,7 @@ function makestuff {
 function editfiles {
   for F in $*
   do
-    [ -f "$F" ] && makestuff && edit1 $F
+    [ -f "$F" ] && [ ! -h "$F" ] && makestuff && edit1 $F
   done
 }
 
@@ -203,7 +203,7 @@ cat <<'EOF' > $PTMP
 $ a\
  */
 EOF
-edit c h y l css java
+edit c cc cpp h y l css java
 
 # dash comments for Haskell
 echo '1,$ s=^=-- =' > $PTMP
@@ -235,13 +235,13 @@ edit tex cls sty m
 #cat $SHTMP $STTMP > $STMP
 #echo "1 r $SCTMP" > $SSTMP
 
-# // comments for PHP
+# // comments for PHP, Rust
 echo '1,$ s=^=// =' > $PTMP
-edit php
+edit php rs
 
 # sharp comments for shell script, nickle, etc
 echo '1,$ s=^=# =' > $PTMP
-edit sh awk 5c rb pl py
+edit sh awk 5c rb pl py toml
 
 # troff comments for manpage
 echo '1,$ s=^=.\\" =' > $PTMP
