@@ -116,8 +116,6 @@ Empty files are not licensed.  This may not be a bug.
 Files without a suffix should be heuristically identified
 and licensed if possible.
 .LP
-Scripts without #! lines should be processed properly.
-.LP
 If delete mode is not specified, a file with a copyright
 already in it is silently ignored. This can lead to problems
 if the cruddy copyright-detection heuristic (currently "is

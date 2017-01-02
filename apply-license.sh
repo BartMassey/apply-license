@@ -229,12 +229,6 @@ editfiles Makefile makefile
 echo '1,$ s=^=% =' > $PTMP
 edit tex cls sty m
 
-## XXX change head script to avoid first line
-## in subsequent processing
-#echo "1 r $CTMP" > $SHTMP
-#cat $SHTMP $STTMP > $STMP
-#echo "1 r $SCTMP" > $SSTMP
-
 # // comments for PHP, Rust
 echo '1,$ s=^=// =' > $PTMP
 edit php rs
