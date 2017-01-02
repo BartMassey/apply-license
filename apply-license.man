@@ -29,6 +29,8 @@ Currently recognized suffixes are
 ".el" (Emacs Lisp),
 ".h",
 ".hs",
+".html",
+".html.hbs" (Handlebars),
 ".java",
 ".js" (JavaScript),
 ".l" (Lex, not lisp),

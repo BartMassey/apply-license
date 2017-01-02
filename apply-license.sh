@@ -205,6 +205,16 @@ $ a\
 EOF
 edit c cc cpp h y l css java
 
+# HTML comments for HTML-like code
+cat <<'EOF' > $PTMP
+1 i\
+<!--
+1,$ s=^= =
+$ a\
+-->
+EOF
+edit html html.hbs
+
 # dash comments for Haskell
 echo '1,$ s=^=-- =' > $PTMP
 edit hs cabal
