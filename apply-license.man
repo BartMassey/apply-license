@@ -85,7 +85,7 @@ text.  For those wanting to avoid clutter.
 .I "copying-file"
 Extract copyright information from the license file
 .IR "copying-file" .
-Default is COPYING in the current directory.
+Default is COPYING or LICENSE (in that order) in the current directory.
 The
 .I "copying-file"
 must consist of at least three paragraphs, with paragraphs

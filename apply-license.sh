@@ -42,7 +42,7 @@ then
 else
   USAGE="$PGM: usage: $PGM [-s|-l|-h] [-r] [-d] [copying-file]"
 fi  
-COPYING="COPYING"
+COPYING=""
 while true
 do
   case $1 in
@@ -66,15 +66,21 @@ if [ $# -eq 1 ]
 then
   COPYING=$1
   shift
+elif [ -f "COPYING" ]
+then
+  COPYING="COPYING"
+elif [ -f "LICENSE" ]
+then
+  COPYING="LICENSE"
 fi
 if [ $# -ne 0 ]
 then
   echo "$USAGE" >&2
   exit 1
 fi
-if [ ! -f "$COPYING" ]
+if [ "$COPYING" = "" ] || [ ! -f "$COPYING" ]
 then
-  echo "$PGM: can't find copying file $COPYING" >&2
+  echo "$PGM: can't find copying file" "$COPYING" >&2
   exit 1
 fi
 
