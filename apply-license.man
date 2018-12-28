@@ -42,6 +42,7 @@ Currently recognized suffixes are
 ".pl",
 ".py",
 ".rb",
+".ron" (Rust resource files),
 ".rs",
 ".scm" (Scheme),
 ".sh",

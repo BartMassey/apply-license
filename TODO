@@ -3,5 +3,6 @@
 * Allow license file creation from data directory
 * Process scripts without #! lines properly
 * Heuristically process unknown files
-* Better copyright detection/modification heuristic.
-* Add appropriate warnings.
+* Better copyright detection/modification heuristic
+* Add appropriate warnings
+* Allow multi-line short-form in the license file

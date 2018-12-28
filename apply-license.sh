@@ -245,9 +245,9 @@ editfiles Makefile makefile
 echo '1,$ s=^=% =' > $PTMP
 edit tex cls sty m
 
-# // comments for PHP, Rust
+# // comments for PHP, Rust, "Ron"
 echo '1,$ s=^=// =' > $PTMP
-edit php rs
+edit php rs ron
 
 # sharp comments for shell script, nickle, etc
 echo '1,$ s=^=# =' > $PTMP
