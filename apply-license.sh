@@ -245,13 +245,13 @@ editfiles Makefile makefile
 echo '1,$ s=^=% =' > $PTMP
 edit tex cls sty m
 
-# // comments for PHP, Rust, "Ron"
+# // comments for Rust, "Ron"
 echo '1,$ s=^=// =' > $PTMP
-edit php rs ron
+edit rs ron
 
 # sharp comments for shell script, nickle, etc
 echo '1,$ s=^=# =' > $PTMP
-edit sh awk 5c rb pl py toml
+edit sh awk 5c rb pl py toml php
 
 # troff comments for manpage
 echo '1,$ s=^=.\\" =' > $PTMP
