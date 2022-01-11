@@ -72,6 +72,9 @@ then
 elif [ -f "LICENSE" ]
 then
   COPYING="LICENSE"
+elif [ -f "LICENSE.txt" ]
+then
+  COPYING="LICENSE.txt"
 fi
 if [ $# -ne 0 ]
 then
