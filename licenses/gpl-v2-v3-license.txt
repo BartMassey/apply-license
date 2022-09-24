@@ -1,6 +1,6 @@
 Copyright © <year> <author>
 
-[This program is licensed under the GPL version 2 or GPL version 3 or later.]
+[This work is licensed under the GPL version 2 or GPL version 3 or later]
 
 
 		    GNU GENERAL PUBLIC LICENSE

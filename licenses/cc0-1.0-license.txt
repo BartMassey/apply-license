@@ -1,6 +1,6 @@
 Copyright © <year> <author>
 
-[This program is licensed under the "Creative Commons CC0 License"]
+[This work is licensed under the "Creative Commons CC0 License"]
 
 Creative Commons Legal Code
 
