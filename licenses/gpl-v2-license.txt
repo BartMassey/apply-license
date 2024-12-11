@@ -1,6 +1,4 @@
-Copyright © <year> <author>
-
-[This work is licensed under the GPL version 2 or later]
+GPL Version 2 License
 
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991

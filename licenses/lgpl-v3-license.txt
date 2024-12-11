@@ -1,6 +1,4 @@
-Copyright © <year> <author>
-
-[This work is licensed under the LGPL version 3 or later]
+LGPL version 3 License
 
 GNU LESSER GENERAL PUBLIC LICENSE
 Version 3, 29 June 2007

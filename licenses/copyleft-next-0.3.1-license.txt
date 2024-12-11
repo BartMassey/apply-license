@@ -1,6 +1,4 @@
-Copyright © <year> <author>
-
-[This work is licensed under the "Copyleft Next License version 0.3.1"]
+Copyleft Next License version 0.3.1
 
                             Release date: 2016-04-29
 
