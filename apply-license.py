@@ -18,7 +18,7 @@ ap.add_argument("-l", "--license-filename", default="LICENSE.txt")
 ap.add_argument("-r", "--recursive", action="store_true")
 ap.add_argument("-u", "--username")
 ap.add_argument("-y", "--year")
-ap.add_argument("license_file", nargs="?")
+ap.add_argument("license_id", nargs="?")
 args = ap.parse_args()
 
 def usage(mesg):
@@ -63,30 +63,37 @@ def write_file(p, text, can_fail=False):
             usage(message)
 
 def find_existing_license():
-    for license_file in ("COPYING", "LICENSE", "LICENSE.txt"):
+    if args.license_filename:
+        targets = (args.license_filename,)
+    else:
+        targets = ("COPYING", "LICENSE", "LICENSE.txt")
+    for license_file in targets:
         p = Path(license_file)
         if p.is_file():
             return p
     return None
 
 def find_license():
-    if args.license_file:
-        lf = Path(args.license_file)
+    if not args.license_id:
+        usage("no license specified")
+        
+    for suffix in ("-license.txt", ".txt", ""):
+        lf = Path(args.license_dir) / (args.license_id + suffix)
         if lf.is_file():
-            return (lf, False)
-        for suffix in ("-license.txt", ".txt", ""):
-            lf = Path(args.license_dir) / (args.license_file + suffix)
-            if lf.is_file():
-                return (lf, True)
-    usage(f"cannot find license file")
+            return lf
+
+    usage(f"{args.license_id}: cannot find license file")
 
 license_path = find_existing_license()
 if license_path:
+    if args.license_id:
+        usage("license id specified but license file exists")
     known_license = False
     write_licensefile = False
     license_filename = str(license_path.name)
 else:
-    license_path, known_license = find_license()
+    license_path = find_license()
+    known_license = True
     license_filename = args.license_filename
     write_licensefile = True
 license = read_file(license_path)
