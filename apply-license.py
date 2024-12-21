@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # Copyright © 2011 Bart Massey
 # [This software is released under the "MIT License"]
-# Please see the file COPYING in the source
+# See the file COPYING in the source
 # distribution of this software for license terms.
 
 import argparse, datetime, os, re, sys, textwrap
@@ -127,12 +127,16 @@ def wrap(text):
     return textwrap.fill(' '.join(text), width = 64).splitlines()
 
 see_statement = [
-    f'Please see the file {license_filename} in this distribution',
+    f'See the file {license_filename} in this distribution',
     'for license terms.',
 ]
 
+see_below_statement = [
+    'See the end of this file for license terms.',
+]
+
 def leading_comment(prefix):
-    return lambda c: [prefix + " " + l for l in c]
+    return lambda c: [prefix + (" " if l else "") + l for l in c]
 
 def c_comment(c):
     star_comment = leading_comment(" *")
@@ -190,10 +194,13 @@ def add_info(p):
 
     if mode == "short":
         comment_text += wrap(see_statement)
+        text[first_line:first_line] = comment(comment_text)
     elif mode == "long":
-        comment_text += license
+        comment_text += wrap(see_below_statement)
+        text[first_line:first_line] = comment(comment_text)
+        text += ['']
+        text += comment(license)
 
-    text[first_line:first_line] = comment(comment_text)
     write_file(p, text)
 
 root = Path("")
@@ -204,9 +211,9 @@ if args.recursive:
 else:
     paths = root.iterdir()
 
-#try:
+try:
     for p in paths:
         if p.is_file():
             add_info(p)
-#except Exception as e:
-#    usage(f"directory walk error: {e}")
+except Exception as e:
+    usage(f"directory walk error: {e}")
