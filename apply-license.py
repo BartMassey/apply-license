@@ -11,15 +11,22 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--license-dir", default="/usr/local/lib/apply-license")
 ap.add_argument(
     "-m", "--mode",
-    choices=["long", "short", "heuristic"],
+    choices=["none", "long", "short", "heuristic"],
     default="short",
 )
 ap.add_argument("-l", "--license-filename", default="LICENSE.txt")
 ap.add_argument("-r", "--recursive", action="store_true")
 ap.add_argument("-u", "--username")
 ap.add_argument("-y", "--year")
+ap.add_argument("-q", "--quick", action="store_true")
+ap.add_argument("-w", "--width", type=int, default=64)
+ap.add_argument("--readme", action="store_true")
 ap.add_argument("license_id", nargs="?")
 args = ap.parse_args()
+
+if args.quick:
+    args.mode = "none"
+    args.readme = True
 
 def usage(mesg):
     print(f"apply-license: {mesg}")
@@ -131,16 +138,56 @@ if write_licensefile:
     write_file(Path(license_filename), new_license)
 
 def wrap(text):
-    return textwrap.fill(' '.join(text), width = 64).splitlines()
+    return textwrap.fill(' '.join(text), width = args.width).splitlines()
 
 see_statement = [
     f'See the file {license_filename} in this distribution',
     'for license terms.',
 ]
 
+see_statement_md = [
+    f'See the file `{license_filename}` in this distribution',
+    'for license terms.',
+]
+
 see_below_statement = [
     'See the end of this file for license terms.',
 ]
+
+def update_readme(readme_path, md):
+    if readme_path.exists():
+        r = read_file(readme_path)
+    else:
+        r = []
+    license_doc = [release_statement]
+    if md:
+        license_doc += see_statement_md
+        r += ["", "## License"]
+    else:
+        license_doc += see_statement
+    r += [""]
+    r += wrap(license_doc)
+    write_file(readme_path, r)
+
+def find_and_update_readme():
+    readmes = (
+        ("README.tpl", True),
+        ("README.md", True),
+        ("README.txt", False),
+        ("README", False),
+    )
+    for readme, md in readmes:
+        readme_path = Path(readme)
+        if readme_path.exists():
+            update_readme(readme_path, md)
+            return
+    update_readme(Path("README.md"), True)
+
+if args.readme:
+    find_and_update_readme()
+
+if args.mode == "none":
+    exit(0)
 
 def leading_comment(prefix):
     return lambda c: [prefix + (" " if l else "") + l for l in c]
