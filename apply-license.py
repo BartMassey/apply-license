@@ -8,7 +8,7 @@ import argparse, datetime, os, re, sys, textwrap
 from pathlib import Path
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--license-dir", default="/usr/local/lib/apply-license")
+ap.add_argument("-q", "--quick", action="store_true")
 ap.add_argument(
     "-m", "--mode",
     choices=["none", "long", "short", "heuristic"],
@@ -18,9 +18,9 @@ ap.add_argument("-l", "--license-filename", default="LICENSE.txt")
 ap.add_argument("-r", "--recursive", action="store_true")
 ap.add_argument("-u", "--username")
 ap.add_argument("-y", "--year")
-ap.add_argument("-q", "--quick", action="store_true")
 ap.add_argument("-w", "--width", type=int, default=64)
 ap.add_argument("--readme", action="store_true")
+ap.add_argument("--license-dir", default="/usr/local/lib/apply-license")
 ap.add_argument("license_id", nargs="?")
 args = ap.parse_args()
 
@@ -220,18 +220,22 @@ comment_styles = (
 commenters = {s : f for ss, f in comment_styles for s in ss}
 
 def add_info(p):
-    if not p.suffix or p.suffix[1:] not in commenters:
+    if p.name in ("Makefile", "makefile"):
+        comment = commenters("sh")
+    elif not p.suffix or p.suffix[1:] not in commenters:
         return
-    comment = commenters[p.suffix[1:]]
+    else:
+        comment = commenters[p.suffix[1:]]
 
     text = read_file(p, can_fail=True)
     if not text:
         return
 
     first_line = 0
-    if text[0].startswith("#!"):
-        first_line = 1
-    elif p.suffix == ".man" and text[0].startswith(".TH"):
+    if p.suffix == ".man":
+        if text[0].startswith(".TH"):
+            first_line = 1
+    elif text[0].startswith("#!"):
         first_line = 1
 
     head = '\n'.join(text[first_line:first_line + 3])

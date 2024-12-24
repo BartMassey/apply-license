@@ -12,4 +12,4 @@ advice on licensing issues.
 ## License
 
 This work is provided under the "MIT License". Please see
-the file `COPYING` in this distribution for license details.
+the file `LICENSE` in this distribution for license details.
