@@ -7,9 +7,8 @@
 apply-license \- apply a license in a directory
 .SH SYNOPSIS
 apply-license
-.BI [ -s | -l | -h ]
-.BI [ -r ]
-.BI [ copying-file ]
+.BI [ "<options> ..." ]
+.BI [ "license_id" ]
 .SH DESCRIPTION
 .LP
 The apply-license script is used to apply a license to the
@@ -30,7 +29,6 @@ Currently recognized suffixes are
 ".h",
 ".hs",
 ".html",
-".html.hbs" (Handlebars),
 ".java",
 ".js" (JavaScript),
 ".l" (Lex, not lisp),
@@ -49,81 +47,82 @@ Currently recognized suffixes are
 ".sty" (LaTeX style),
 ".tex",
 ".y" (Yacc);
-the file "Makefile" (but not "makefile") is also processed.
+the files "Makefile"/"makefile" are also processed.
 .LP
-The first line
-of a ".sh", ".awk", ".5c", ".pl" or ".rb" file must be a
-"#!" line and is skipped.  The first line of a ".man" file
-must be a ".TH" line and is skipped.  Other files may be
-added in the future.
+The first line of a script file may be a "#!" line and is
+skipped if so.  The first line of a ".man" file may be a
+".TH" line and is skipped if so.
 .SH OPTIONS
 .TP
-.I "-d"
-If an existing copyright notice is found in the file, delete
-it before proceeding. This is currently very simple and
-crude, so check its work afterward.
+.B "-q," "--quick"
+This flag "quick-licenses" the project by creating a license
+file from the given license id, adding a license note using
+"--readme", and setting mode to "none".
 .TP
-.I "-h"
-For each "short" file (less than twice the length
-of the license to be applied) apply-license will omit the
-actual license text and just put a reference to the COPYING
-file.  This heuristic is intended as a compromise between
-the "-s" and "-l" options.
+.B "-m," "--mode " [ \fInone\fP | \fIlong\fP | \fIshort\fP | \fIheuristic\fP ]
+Indicate the way in which the license will be applied to
+source files. In
+.I none
+mode, the license will not be applied to files.  In
+.I long
+mode, the license will be applied in full at the end of
+all files.  In
+.I short
+mode, a reference to the license file
+will be applied.  In
+.I heuristic
+mode, each less than twice
+the length of the license to be applied will be treated as
+short. The default mode is
+.IR short .
 .TP
-.I "-l"
-This flag ensures that every file, no matter how
-short, contains the full license text.  For the paranoid,
-mostly.
-.TP
-.I "-r"
+.B "-r"
 This flag makes apply-license recurse into subdirectories.
 .TP
-.I "-s"
-This flag (the default) ensures that every file, no
-matter how long, contains just a pointer to the license
-text.  For those wanting to avoid clutter.
+.B "-u," "--username" "<\fIusername\fP>"
+Full name of the user copyrighting the files. This is
+required unless the environment variable
+.B USERNAME
+is present.
 .TP
-.I "copying-file"
-Extract copyright information from the license file
-.IR "copying-file" .
-Default is COPYING or LICENSE (in that order) in the current directory.
+.B "-y," "--year" "<\fIyear\fP>"
+Copyright year. Defaults to current year.
+.TP
+.B "-w," "--width" "<\fIwidth\fP>"
+Text wrap width. Defaults to 64.
+.TP
+.B "--readme"
+Edit the README to include the license. Chosen README is
+README.tpl, README.md, README.txt, README in that order.
+If no README exists, README.md will be created.
+.TP
+.B "--license-filename" "<\fIlicensefile\fP>"
+Path to a file containing a license.  Default is LICENSE.txt
+or LICENSE or COPYING (in that order) in the current
+directory. If none exists, LICENSE.txt will be created.
 The
-.I "copying-file"
+.I "licensefile"
 must consist of at least three paragraphs, with paragraphs
 separated by a single blank line.  The first paragraph
-should contain the copyright notice.  The notice should
-contain the word "Copyright" (preferably in this
-capitalization); this is used to detect previously-applied
-licenses and avoid re-application, and to detect bogus
-copying-files.
-.LP
-The copyright notice would normally be of the form
-.nf
-
-  Copyright \[co] 2011 Bart Massey
-
-.fi
-The second paragraph should contain the name of the
-license, for example
-.nf
-
-  [This is the "MIT license"]
-
-.fi
+should contain the copyright notice. The second paragraph
+should contain a bracketed license name statement.
 Subsequent paragraphs should contain the license text
 itself.
+.TP
+.B "license_id"
+Find a file named "license_id" in the license directory and
+use that for the license. Incompatible with
+.BR "--licensefile" .
 .SH BUGS
-.LP
-Empty files are not licensed.  This may not be a bug.
 .LP
 Files without a suffix should be heuristically identified
 and licensed if possible.
 .LP
-If delete mode is not specified, a file with a copyright
-already in it is silently ignored. This can lead to problems
-if the cruddy copyright-detection heuristic (currently "is
-the word 'copyright' in there?") fails. See
-http://github.com/BartMassey/emacs-copyright
-for an ugly example.
+A file with a copyright already in it is silently
+ignored. This can lead to problems if the cruddy
+copyright-detection heuristic (currently "is the
+word 'copyright' in there?") fails. See
+http://github.com/BartMassey/emacs-copyright for an ugly
+example.
 .SH AUTHOR
 Bart Massey <bart@cs.pdx.edu>
