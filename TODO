@@ -2,3 +2,4 @@
 * Heuristically process unknown files
 * Better copyright detection/modification heuristic
 * Allow multi-line short-form in the license file
+* Handle dual licenses better
