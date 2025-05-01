@@ -20,7 +20,7 @@ ap.add_argument("-u", "--username")
 ap.add_argument("-y", "--year")
 ap.add_argument("-w", "--width", type=int, default=64)
 ap.add_argument("--readme", action="store_true")
-ap.add_argument("--license-dir", default="/usr/local/lib/apply-license")
+ap.add_argument("--license-dir", default="/usr/local/share/licenses")
 ap.add_argument("license_id", nargs="?")
 args = ap.parse_args()
 
